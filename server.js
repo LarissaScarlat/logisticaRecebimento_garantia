@@ -1,4 +1,6 @@
 import express from "express";
+app.use(express.json());
+
 const app = express();
 
 app.use(express.static("public"));
