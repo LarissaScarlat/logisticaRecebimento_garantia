@@ -27,7 +27,7 @@ app.post("/api/perdas", async (req, res) => {
   const registros = codigosBarras.map((codigo) => ({
     numero_rastreio: codigo,
     numero_localizacao: localizacao,
-    status: "recebido"
+    status: "RECEBIDO"
   }));
 
   const { error } = await supabase
