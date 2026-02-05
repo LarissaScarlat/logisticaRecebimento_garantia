@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Controle de Perdas</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+
+    h1, h2 {
+      margin-bottom: 5px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Controle de Perdas</h1>
+<p>Bem-vindo ao sistema de controle de perdas.</p>
+
+<form id="formFuncionario">
+
+  <h2>Responsável</h2>
+  <select id="responsavel" required>
+    <option value="">Selecione</option>
+    <option value="Vinicius">Vinicius</option>
+    <option value="Coelho">Coelho</option>
+    <option value="Guilherme">Guilherme</option>
+    <option value="Cauã">Cauã</option>
+    <option value="Juan">Juan</option>
+    <option value="Fernanda">Fernanda</option>
+    <option value="Bahia">Bahia</option>
+  </select>
+
+  <h2>Código de Barras (produtos)</h2>
+  <input 
+    type="text"
+    id="codigoBarrasInput"
+    placeholder="Bipe o código e pressione Enter"
+    autofocus
+  />
+
+  <ul id="listaCodigos"></ul>
+
+  <h2>Nº Localização</h2>
+  <input 
+    type="text"
+    id="localizacao"
+    placeholder="Bipe a localização"
+    required
+    inputmode="numeric"
+  />
+
+  <button type="submit">Enviar</button>
+</form>
+
+<script>
+  const codigos = [];
+
+  const inputCodigo = document.getElementById("codigoBarrasInput");
+  const inputLocalizacao = document.getElementById("localizacao");
+  const lista = document.getElementById("listaCodigos");
+  const form = document.getElementById("formFuncionario");
+
+  // Captura múltiplos códigos de barras
+  inputCodigo.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const codigo = inputCodigo.value.trim();
+      if (!codigo) return;
+
+      if (codigos.includes(codigo)) {
+        alert("Código já adicionado!");
+        inputCodigo.value = "";
+        return;
+      }
+
+      codigos.push(codigo);
+
+      const li = document.createElement("li");
+      li.textContent = codigo;
+      lista.appendChild(li);
+
+      inputCodigo.value = "";
+    }
+  });
+
+  // Permite bipar localização sem enviar o formulário
+  inputLocalizacao.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      inputCodigo.focus();
+    }
+  });
+
+  // Envio para o backend
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    if (codigos.length === 0) {
+      alert("Adicione ao menos um código de barras.");
+      return;
+    }
+
+    const dados = {
+      responsavel: document.getElementById("responsavel").value,
+      localizacao: inputLocalizacao.value,
+      codigosBarras: codigos
+    };
+
+    try {
+      const response = await fetch("/api/perdas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+      });
+
+      if (!response.ok) throw new Error("Erro ao enviar");
+
+      alert("Perdas registradas com sucesso!");
+
+      // Reset total
+      form.reset();
+      lista.innerHTML = "";
+      codigos.length = 0;
+      inputCodigo.focus();
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao enviar os dados.");
+    }
+  });
+</script>
+
+</body>
+</html>
