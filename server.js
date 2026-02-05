@@ -15,18 +15,17 @@ app.get("/", (req, res) => {
   res.sendFile("index.html", { root: "public" });
 });
 
-// 🚀 ROTA QUE SALVA NO SUPABASE
 app.post("/api/perdas", async (req, res) => {
-  const { localizacao, codigosBarras } = req.body;
+  const { responsavel, localizacao, codigosBarras } = req.body;
 
-  if (!localizacao || !codigosBarras?.length) {
+  if (!responsavel || !localizacao || !codigosBarras?.length) {
     return res.status(400).json({ error: "Dados inválidos" });
   }
 
-  // transforma cada código em uma linha da tabela
   const registros = codigosBarras.map((codigo) => ({
     numero_rastreio: codigo,
     numero_localizacao: localizacao,
+    responsavel: responsavel,
     status: "RECEBIDO"
   }));
 
@@ -41,6 +40,8 @@ app.post("/api/perdas", async (req, res) => {
 
   res.json({ success: true });
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
