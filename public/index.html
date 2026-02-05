@@ -4,37 +4,85 @@
   <meta charset="UTF-8" />
   <title>Controle de Perdas</title>
 
-  <style>
+ <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 16px;
+    background: #f9f9f9;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin: 16px 0 6px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  form {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  ul {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  /* 🖥️ Ajustes para telas maiores */
+  @media (min-width: 768px) {
     body {
-      font-family: Arial, sans-serif;
       max-width: 600px;
       margin: 40px auto;
     }
+  }
+</style>
 
-    h1, h2 {
-      margin-bottom: 5px;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 4px;
-    }
-
-    button {
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
 
